@@ -1,0 +1,14 @@
+{
+    "indent"    : 4,
+    "camelcase" : true,
+    "unused"    : true,
+    "eqeqeq"    : true,
+    "undef"     : false,
+    "browser"   : true,
+    "jquery"    : true,
+    "devel"     : true,
+    "predef"    : [
+        "_",
+        "QUnit"
+    ]
+}

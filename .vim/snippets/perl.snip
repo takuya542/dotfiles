@@ -1,0 +1,591 @@
+snippet u
+    #!/usr/bin/perl
+    use strict;
+    use warnings;
+
+snippet package
+    package Main::Sub; #Main/Sub.pm
+    use strict;
+    use warnings;
+
+    sub new{
+        my ($class,$args) = @_;
+        bless ($args,$class);
+    }
+
+snippet parent
+    use parent qw/${1}/;
+
+
+#モジュールの検索パス追加
+snippet lib
+    use lib '../';
+    print Dumper(\@INC);
+
+
+#コンストラクタ
+snippet new
+    sub new{
+        my ($class,$args) = @_;
+        bless ($args,$class);
+        ${1} 
+    }
+
+    my $obj = $class->new(+{
+        id=>10,
+        name=>'onda',
+    })
+
+snippet super 
+    sub new{
+        my ($class,$args)=@_;
+        $class->SUPER:newi(+{
+            id =>10,
+            name=>'onda',
+        });
+        ${1} 
+    }
+
+snippet bless
+    my $instance = bless{ game_id => 1 },"Game::Model::PreRegister::Logic::Finder";
+
+#宣言
+snippet array
+    my @array = 1..1000;
+    my @array = qw(1 2 3 4 5);
+    my @array = ();
+
+snippet arrayref
+    my $array = [ qw/${1}/];
+
+snippet hash
+    my %hash = ( ${1} =>1, name =>'onda' );
+    $hash{id};
+
+snippet hashref
+    my $hash = +{ id =>1,name => 'onda' };
+    $hash->{id};
+
+
+
+#ループ
+snippet for
+    for my $value (1..10){${1}}
+    for my $key(sort keys %hash){}
+
+snippet foreach
+    foreach my $value(@array){
+    ${1}    
+    }
+
+snippet while
+    while(my ($key,$value) = each (%hash)){
+    ${1}
+    }
+
+snippet scalar
+    if(scalar(@${1})){
+        ${2}
+    }
+
+
+
+
+
+#制御構造
+snippet two
+    my $result = (defined(${1})) ? "error" : undef;
+
+snippet three 
+  my $size = 
+    ($width < 10) ? "small"   :
+    ($width < 20) ? "mediut"  :
+    ($width < 50) ? "large"   :
+                    "extra-large";#デフォルト
+
+
+
+
+#メソッド定義
+snippet sub
+    sub ${1} {
+        my ($args) = @_;
+    }
+
+snippet class
+    sub ${1} {
+        my ($class) = @_;
+    }
+
+snippet instance
+    sub ${1} {
+        my ($self) = @_;
+    }
+
+snippet self 
+    sub ${1} {
+        my ($self) = @_;
+    }
+
+
+
+
+#ソート
+snippet asort
+    my @num = qw(23 67 45 25 9 12);
+    my @sort_line = sort{$a <=> $b}@num; #昇順
+    my @sort_line = sort{$b <=> $a}@num; #降順
+
+snippet hsort
+    sort {$b <=> $a} keys %hash;  #key:数字順（降順）
+    sort {$a <=> $b} keys %hash;  #key;数字順（昇順）
+    sort {$b cmp $a} keys %hash;  #key:文字コード順（降順）
+    sort {$a cmp $b} keys %hash;  #key:文字コード順（昇順）
+    sort { $hash{$a} <=> $hash{$a} } keys %hash; #value:数字順(降順)
+    sort { $month{$a} <=> $month{$a}} keys %hash; #value:数字順(昇順)
+
+snippet reverse
+    my @reverse_line = reverse @line; #配列の格納順を逆にする  
+
+snippet sort
+
+    # @list = [ +{ count => 1 }, +{ count => 8 }, +{ count => 3 }.....];
+    # b,aにはそれぞれ配列の要素が入るイメージ
+    my @sorted_list = sort { $b->{count} <=> $a->{count} }@$list;
+
+
+
+#正規表現
+snippet gg
+    if($value =~ /\<iframe(.*)$/){
+    ${1}
+    }
+
+snippet ss
+    $value =~ s/^\<iframe(.*)\"\>//g
+
+snippet trim
+    #変数$inputを引数として渡し、その中から空白文字を全て除去する（gオプションで繰り返しとなる）
+    $input =~ s/\s//g;
+
+snippet array_grep
+    if(grep{ $_ eq $item}@list ){
+    }
+
+
+
+#出力(デバッグ)
+snippet dump
+    use Data::Dumper;
+    print Dumper(${1});
+
+snippet Dumper
+    print Dumper(${1});
+
+snippet yaml
+    use YAML;
+    print Dump(${1});
+
+snippet carp
+    use Carp qw/croak/;
+    sub hoge{
+        croak "Exception!"
+    }
+snippet croak
+    use Carp qw/croak/;
+    croak "need user_id" unless ( $user_id );
+
+snippet line
+    print "行=>".__LINE__." file=>".__FILE__."\n";
+
+snippet Common
+    use lib '~/dotfiles';
+    use Utility::Common;
+    Common::dump(${1},);
+
+snippet caller
+    my ($package, $filename, $line, $subroutine) = caller(0);
+
+
+#テストコード
+snippet compile
+    use Test::More;
+    use GameConf;
+    use Game::Model::PreRegister::Worker::Mailer;
+
+    BEGIN {
+        plan tests => 1;
+        use_ok('Game::Model::PreRegister::Worker::Mailer');
+    };
+
+
+snippet test
+    #!/usr/bin/env perl -w
+    use strict;
+    use Test::More;
+
+    subtest "test_name"=> sub {
+    };
+
+    done_testing;
+
+snippet isa_ok
+    isa_ok($obj,'Model::Base'); #オブジェクトがクラスのインスタンスか確認
+
+snippet use_ok
+    use_ok("Rakumeshi::Model::Base"); #$classがuse出来るか確認
+
+snippet ok
+    ok (defined $obj,'objは定義されています');
+
+snippet is
+    is($obj->name,"onda",'obj->nameはondaを返す');
+
+snippet is_deeply
+    is_deeply($result,$expect, 'args form match');
+    note explain($result);
+
+snippet can_ok
+    my $class = Rakumeshi::Model::Base;
+    my @method = qw/find insert/;
+    can_ok($class,@method); #$classが@methodで定義した関数を実装しているか否か確認
+
+snippet dies_ok
+    use Test::Exception;
+
+    my $result;
+    my $expect;
+    dies_ok{
+        $result = Game::Ope::Test->test_method($invalid_args);
+    }'dies_ok successfully';
+    is_deeply($result,$expect, 'args form match');
+
+snippet lives_ok
+    use Test::Exception;
+
+    my $result;
+    my $expect;
+    lives_ok{
+        $result = Game::Ope::Test->test_method($invalid_args);
+    }'lives_ok successfully';
+    is_deeply($result,$expect, 'args form match');
+
+snippet lives_and
+    my $expect = undef;
+    lives_and {
+        is_deeply Platform::PubSub::Subscriber::Invite::Chat::callback_for_install( $ctx, $user_id, +{} ),$expect
+    },'lives_ok args match';
+
+snippet throws_ok
+    use Test::Exception;
+
+    my $result;
+    my $expect;
+    throws_ok{
+        $result = Func::Invite->new($invalid_args);
+    }qr/error_message/,'throws_ok successfully';
+
+snippet mock
+    use Test::Mock::Guard qw/mock_guard/;
+    my $guard = mock_guard(
+        'Game::Model::PreRegister::Data::StampIncentive' => +{
+            single => sub { Game::Model::PreRegister::Data::StampIncentive->new(+[]); }
+        },
+    );
+    is $guard->call_count('Game::Model::PreRegister::Data::StampIncentive','single'), 1; #呼ばれた回数
+
+snippet note 
+    note explain($result);
+
+snippet explain 
+    note explain($result);
+
+#ファイル操作
+snippet rfile
+    if (! open $in_fh, '<', $filename){     #読み込み専用でオープン(handler=$in_fh)
+        die "Can not open '$filename':$!";
+    };
+
+
+snippet wfile
+    if (! open $out_fh, '>', $filename){    #書き込み専用でオープン(handler=$out_fh)
+        die "Can not open '$filename':$!";
+    }
+
+
+
+#データ構造
+snippet aa 
+    #リストリファレンス内にリストリファレンスのネスト
+    my $array_array = [
+        [ qw/ Ken Japan 19/ ],
+        [ qw/ Taro USA 45/ ],
+    ]
+
+snippet ha 
+    #リストリファレンス内の各要素がハッシュリファレンス
+    my $hash_arrays =[ 
+        { id=>"1", name=>'shin', age=>20 },
+        { id=>"2", name=>'taku', age=>25 },
+    ];
+
+
+snippet ah
+    #ハッシュリファレンスの各バリューがリストリファレンス
+    my $array_hash = {
+    my $array = [ qw/1 2 3 4 5/];
+        'onda'          => [ qw/32 45 87/ ],
+        'tanaka'        => [ qw/23 45 91/ ],
+        'watanabe'      => [ qw/45 31 99/ ]
+    }
+
+snippet hh 
+    #ハッシュリファレンスの各バリューがハッシュリファレンスのネスト
+    my $infos = +{
+        '01:01' => +{
+            count => 3,
+            ave_time => 2.1, 
+        },
+        '01:02' => +{
+            count => 5, 
+            ave_time => 4.1,
+        },
+        '01:03' => +{
+            count => 6,
+            ave_time => 3.5, 
+        }
+    };
+
+
+
+#標準入力
+snippet stdin
+    chomp(my $value = <STDIN>); #コマンドラインからの入力を変数に格納
+    chomp(my @value = <STDIN>); #Ctr+Dが押されるまで標準入力を一行ずつ配列に格納する
+
+    #標準入力を一行ずつ読み込む。
+    #コマンドラインから引数でファイル名を与えた場合、そのファイルを先頭から一行ずつ読み込む
+    while(<>){}
+
+
+
+#grep/map
+snippet grep
+  my @odd_number = grep { $_ % 2 } @num_array; #奇数出力 
+  my @match_line = grep { $_ =~ /\bfuck\b/i } @strig_list; #fuckに一致する文字列取得
+
+
+snippet map
+  my @trimmed = map{ my $line = $_; $line = ~s/^\s+//;$line} @pre_trimmed;  #配列各要素の先頭空白を取り除く
+  my @modefied_data = map { my $line = $_; &sub_modefy($line);} @pre_modefied_data;
+
+
+
+
+
+
+#時間生成
+snippet time
+  use Time::HiRes;
+  my $reg_data_before  = sprintf("%d",Time::HiRes::time());
+  my $time_diff = Time::HiRes::time() - $reg_data_from;
+  print "time_diff:".$time_diff."\n";
+
+
+
+
+#乱数生成
+snippet rand
+    my $rand_num = int(rand 100)+1; #1~100までの整数値をランダムで生成
+
+    use String::Random;
+    String::Random->new->randregex('[A-Za-z0-9]{32}');#32文字のランダムな文字列の生成
+
+
+
+
+
+#シェルスクリプト(sh用スニペットに移動予定)
+snippet shell
+    #!/bin/sh
+    a=0
+    while [ $a -ne 10 ]
+        do
+            　　a=`expr $a + 1`
+                mysql -u root -p <"a"_explain.sql > "a"_result_explain.txt
+        done
+
+#引数
+snippet argv
+    die"set 2 argument\n" if(@ARGV !=2);
+    my ($price,$pay) = @ARGV ;
+
+
+#例外
+snippet dm 
+    use Data::Dumper;
+    Common::dump("F",$_::F);
+    Common::dump("U",$_::U);
+    Common::dump("C",$_::C);
+
+
+snippet eval
+    my $num = 10;
+    my $ans;
+    eval{
+        $ans = $num/0; 
+        print "here is not be activated"; 
+    };
+    if($@){　#eval内でエラーキャッチすれば値入る
+        print "catch!".$@."\n";
+        ans = 0;
+    }
+    print $ans;
+
+
+#定数宣言
+snippet readonly
+    use Data::Lock qw(dlock);
+    dlock our $MAX   =   ${1};
+
+
+#アクセサ生成
+snippet accessor
+    use base qw/Class::Accessor::Fast/;
+    __PACKAGE__->mk_accessors(qw/ id name reg_date/);
+
+    my $self = $class->new(+{
+        id      => 1,
+        mame    => 'onda',
+    };
+
+    $self->id;
+    $self->name('tanaka');
+
+
+#配列、ハッシュ操作
+
+#キーワードをキーに含むハッシュのvalueをリストで取得
+snippet  get_value_list{
+    sub _get_value_list{
+        my ($args,$keyword) = @_;
+        my @list = map{$args->{$_}} grep { $_ =~ /$keyword/ } grep { $args->{$_} ne '' } keys %$args;
+        return \@list;
+    }
+
+
+#キーワードをキーに含むハッシュのkeyをリストで取得
+snippet get_key_list{
+    sub _get_key_list{
+        my ($args,$keyword) = @_;
+        my @list = map{$_} grep { $_ =~ /$keyword/ } grep { $args->{$_} ne '' } keys %$args;
+        return \@list;
+    }
+
+
+#キーワードをキーに含むハッシュをリストで取得
+snippet get_hash_by_key{
+    sub _get_hash_by_key{
+        my ($args,$keyword) = @_;
+        my %hash = map { $_ => $args->{$_} } grep { $_ =~ /$keyword/  &&  $args->{$_} ne '' } keys %$args;
+        return \%hash;
+    }
+
+
+
+snippet to_hashref 
+    sub to_hashref{
+        my ($self) = @_;
+        my %hash = map { $_ => $self->$_ } grep { /^[a-z]/ } keys %$self;
+        \%hash;
+    }
+
+
+#mobasif関連
+snippet warn
+    MException::warn('development');
+
+
+#コメント
+snippet pop
+    =pop
+    ${1}
+    =cut
+
+
+snippet wget
+    my $dir = '~/dir_wget/';
+    my $source = 'yahoo.co.jp';
+    mkdir $dir if(-d $dir);
+    \`wget $source -P $dir\`;
+
+snippet @
+    my ($class,$args) = @_;
+    my ($self,$args) = @_;
+
+snippet MLog
+    use Data::Dumper;
+    MLog::write("$_::LOG_DIR/dump_dev.warn", Dumper($err));
+
+snippet POD
+    __END__
+
+    =head1 Name
+
+    InternalAPI::Client::Invitation - Internal API Client for Invitation API
+
+    =head1 SYNOPSIS
+
+    use InternalAPI::Client::Invitation;
+
+    my $client = InternalAPI::Client::Invitation->new;
+    my $result  = $client->call_user_invitation_get($invitee_user_id, $app_id, +{count => 100});
+
+    =head1 DESCRIPTION
+
+    =head2 method_1 
+    Here should be description for method_1
+
+    See below wiki for more details.
+    link
+
+    =head2 method2_
+    Here should be description for method_2
+
+    See below wiki for more details.
+    link
+
+    =head1 SEE ALSO
+
+    link1
+    link2
+
+    =head1 AUTHOR
+
+    name : Takuya Onda
+    mail : takuya.onda@dena.com
+
+    =cut
+
+snippet URI
+    use URI;
+    my $uri = URI->new(Request::makeBasePath(). '/_pf_invitation_landing');
+    $uri->query_form(
+        app_id => $app_id,
+        code   => $invitation_code
+    );
+    return $uri->as_string;
+
+snippet args
+    my ( $id, $options )  = @_;
+    $options || = +{};
+
+snippet public_method
+    #-------------------------------------#
+    #         public method               #
+    #-------------------------------------#
+
+snippet private_method
+    #-------------------------------------#
+    #         private method              #
+    #-------------------------------------#

@@ -1,0 +1,335 @@
+#export EDITOR=vim        # エディタをvimに設定
+#bindkey -v               # キーバインドをviモードに設定
+
+export LANG=ja_JP.UTF-8  # 文字コードをUTF-8に設定
+export KCODE=u           # KCODEにUTF-8を設定
+export AUTOFEATURE=true  # autotestでfeatureを動かす
+
+setopt no_beep           # ビープ音を鳴らさないようにする
+setopt auto_cd           # ディレクトリ名の入力のみで移動する 
+setopt auto_pushd        # cd時にディレクトリスタックにpushdする
+setopt correct           # コマンドのスペルを訂正する
+setopt magic_equal_subst # =以降も補完する(--prefix=/usrなど)
+setopt prompt_subst      # プロンプト定義内で変数置換やコマンド置換を扱う
+setopt notify            # バックグラウンドジョブの状態変化を即時報告する
+setopt equals            # =commandを`which command`と同じ処理にする
+
+### Complement ###
+autoload -U compinit; compinit # 補完機能を有効にする
+setopt auto_list               # 補完候補を一覧で表示する(d)
+setopt auto_menu               # 補完キー連打で補完候補を順に表示する(d)
+setopt list_packed             # 補完候補をできるだけ詰めて表示する
+setopt list_types              # 補完候補にファイルの種類も表示する
+
+bindkey "^[[Z" reverse-menu-complete                # Shift-Tabで補完候補を逆順する("\e[Z"でも動作する)
+zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}' # 補完時に大文字小文字を区別しない
+
+### Glob ###
+setopt extended_glob # グロブ機能を拡張する
+unsetopt caseglob    # ファイルグロブで大文字小文字を区別しない
+
+### History ###
+HISTFILE=~/.zsh_history   # ヒストリを保存するファイル
+HISTSIZE=10000            # メモリに保存されるヒストリの件数
+SAVEHIST=10000            # 保存されるヒストリの件数
+
+setopt bang_hist          # !を使ったヒストリ展開を行う(d)
+setopt extended_history   # ヒストリに実行時間も保存する
+setopt hist_ignore_dups   # 直前と同じコマンドはヒストリに追加しない
+setopt share_history      # 他のシェルのヒストリをリアルタイムで共有する
+setopt hist_reduce_blanks # 余分なスペースを削除してヒストリに保存する
+
+
+# マッチしたコマンドのヒストリを表示できるようにする
+autoload history-search-end
+zle -N history-beginning-search-backward-end history-search-end
+zle -N history-beginning-search-forward-end history-search-end
+bindkey "^P" history-beginning-search-backward-end
+bindkey "^N" history-beginning-search-forward-end
+
+bindkey '^]'   vi-find-next-char
+bindkey '^[^]' vi-find-prev-char
+
+# すべてのヒストリを表示する
+function history-all { history -E 1 }
+
+
+## ------------------------------
+## Look And Feel Settings
+## ------------------------------
+#### Ls Color ###
+## 色の設定
+## 補完時の色の設定
+## ZLS_COLORSとは？
+#
+
+# zsh の補完候補が画面から溢れ出るとき、それでも表示するかどうか確認する。
+export LISTMAX=0
+
+ # ls の色付け
+ # アーカイブファイルは赤
+ # 画像・動画・音声ファイルは紫
+ # pdf/ps/dvi は思案
+ # オフィス系は緑
+ # README/TODO/MEMO 系はオレンジ
+
+export LS_COLORS="\
+no=00:\
+fi=00:\
+di=01;34:\
+ln=01;36:\
+pi=40;33:\
+so=01;35:\
+do=01;35:\
+bd=40;33;01:\
+cd=40;33;01:\
+or=40;31;01:\
+su=37;41:\
+sg=30;43:\
+tw=30;42:\
+ow=34;42:\
+st=37;44:\
+ex=01;32:\
+*.tar=00;31:\
+*.tgz=00;31:\
+*.arj=00;31:\
+*.taz=00;31:\
+*.lzh=00;31:\
+*.zip=00;31:\
+*.z=00;31:\
+*.Z=00;31:\
+*.gz=00;31:\
+*.bz2=00;31:\
+*.bz=00;31:\
+*.tbz2=00;31:\
+*.tz=00;31:\
+*.xz=00;31:\
+*.deb=00;31:\
+*.rpm=00;31:\
+*.jar=00;31:\
+*.rar=00;31:\
+*.ace=00;31:\
+*.zoo=00;31:\
+*.cpio=00;31:\
+*.7z=00;31:\
+*.rz=00;31:\
+*.eps=00;35:\
+*.jpg=00;35:\
+*.JPG=00;35:\
+*.jpeg=00;35:\
+*.JPEG=00;35:\
+*.gif=00;35:\
+*.GIF=00;35:\
+*.bmp=00;35:\
+*.BMP=00;35:\
+*.pbm=00;35:\
+*.pgm=00;35:\
+*.ppm=00;35:\
+*.tga=00;35:\
+*.xbm=00;35:\
+*.xpm=00;35:\
+*.tif=00;35:\
+*.tiff=00;35:\
+*.png=00;35:\
+*.PNG=00;35:\
+*.mng=00;35:\
+*.pcx=00;35:\
+*.mov=00;35:\
+*.mpg=00;35:\
+*.mpeg=00;35:\
+*.m2v=00;35:\
+*.mkv=00;35:\
+*.ogm=00;35:\
+*.mp4=00;35:\
+*.m4v=00;35:\
+*.mp4v=00;35:\
+*.vob=00;35:\
+*.qt=00;35:\
+*.nuv=00;35:\
+*.wmv=00;35:\
+*.asf=00;35:\
+*.rm=00;35:\
+*.rmvb=00;35:\
+*.flc=00;35:\
+*.avi=00;35:\
+*.fli=00;35:\
+*.gl=00;35:\
+*.dl=00;35:\
+*.xcf=00;35:\
+*.xwd=00;35:\
+*.yuv=00;35:\
+*.aac=00;35:\
+*.au=00;35:\
+*.flac=00;35:\
+*.mid=00;35:\
+*.midi=00;35:\
+*.mka=00;35:\
+*.mp3=00;35:\
+*.mpc=00;35:\
+*.ogg=00;35:\
+*.ra=00;35:\
+*.wav=00;35:\
+*.pdf=00;36:\
+*.ps=00;36:\
+*.dvi=00;36:\
+*.doc=00;32:\
+*.docx=00;32:\
+*.xls=00;32:\
+*.xlsx=00;32:\
+*.yml=00;32:\
+*.toml=00;32:\
+*.ppt=00;32:\
+*.pptx=00;32:\
+*.potx=00;32:\
+*.pot=00;32:\
+*.odt=00;32:\
+*.ods=00;32:\
+*.odp=00;32:\
+*.cvx=00;32:\
+*README=00;33:\
+*README.txt=00;33:\
+*readme=00;33:\
+*readme.txt=00;33:\
+*TODO=00;33:\
+*TOD.txt=00;33:\
+*MEMO=00;33:\
+*MEMO.txt=00;33:\
+*memo=00;33:\
+*memo.txt=00;33:\
+"
+
+export LSCOLORS=Exfxcxdxbxegedabagacad
+export ZLS_COLORS="${LS_COLORS}"
+export CLICOLOR="true"
+zstyle ':completion:*:default' list-colors ${(s.:.)LS_COLORS}
+
+# zsh の補完機能を強化する。必須。
+autoload -Uz compinit
+compinit
+
+# プロンプト
+# 色付きにする。
+autoload -Uz colors
+colors
+
+# 上から順に、ユーザ名、ホスト名、カレントディレクトリ、グループ名、プロンプト
+# プロンプトは、スーパーユーザ時に #
+# スーパーユーザ以外かつ直前のコマンドの終了コードが 0 であるなら !, 0 でないなら $
+p_usr="%{${fg[green]}%}%n%{${reset_color}%}"
+p_hst="%{${fg[magenta]}%}@%m%{${reset_color}%}"
+p_dir="%{${fg[cyan]}%}:%/%{${reset_color}%}"
+p_grp="[${GROUP}]"
+p_prt="%(?!%(!.#.$) @? )"
+
+function ps_exit() {
+  a=$?
+  if [ $a -ne 0 ]; then
+    echo "(´･ω･\`%)ｼｮﾎﾞﾝ"
+  else
+    echo "(\`･ω･´%)ｷﾘｯ"
+  fi
+  exit $a;
+}
+p_prt="\$(ps_exit)"
+
+PROMPT="${p_usr}${p_hst} ${p_dir}"$'\n'"${p_prt} $ "
+#PROMPT="${p_usr}${p_hst} ${p_dir}"$'\n'"${p_grp}${p_prt} $ "
+
+
+ # if ... fi とか "..." など、複数行にわたる場合
+ PROMPT2="%{${fg[yellow]}%}%_> %{${reset_color}%}"
+
+ # コマンド訂正時
+ SPROMPT="%{${fg[yellow]}%}correct%{${reset_color}%}: %{${fg[red]}%}%R%{${reset_color}%} => %{${fg[cyan]}%}%r%{${reset_color}%} (y|n|a|e)? "
+
+ # 右に出るプロンプト。日時を表示する。
+ RPROMPT="[%D{%m/%d %H:%M}]"
+
+# Git を使っているときにリポジトリの状態を表示する。
+autoload -Uz is-at-least
+if is-at-least 4.3.10; then
+   autoload -Uz vcs_info
+   zstyle ':vcs_info:git:*' check-for-changes true
+   zstyle ':vcs_info:git:*' stagedstr "%F{yellow}!"
+   zstyle ':vcs_info:git:*' unstagedstr "%F{red}+"
+   zstyle ':vcs_info:*' formats "%F{green}%c%u[%b]%f"
+   zstyle ':vcs_info:*' actionformats '[%b|%a]'
+   precmd () { vcs_info }
+   RPROMPT=$RPROMPT'${vcs_info_msg_0_}'
+fi
+
+
+
+# 補完候補の色付け、メッセージの設定
+zstyle ':completion:*:default' list-colors ${(s.:.)LS_COLORS}
+zstyle ':completion:*' verbose yes
+zstyle ':completion:*' completer _expand _complete _match _prefix _approximate _list _history
+zstyle ':completion:*:messages' format "%{${fg[cyan]}%}%d%{${reset_color}%}"
+zstyle ':completion:*:warnings' format "%{${fg[red]}%}no matches for: %{${fg[yellow]}%}%d%{${reset_color}%}"
+zstyle ':completion:*:descriptions' format "%{${fg[yellow]}%}completing %d%{${reset_color}%}"
+zstyle ':completion:*:corrections' format "%{${fg[yellow]}%}%d %{${fg[red]}%}(errors: %e){${reset_color}%}"
+zstyle ':completion:*:options' description 'yes'
+zstyle ':completion:*' group-name ''
+
+# これらのファイルは補完候補にしない。でも rm では候補にする。
+zstyle ':completion:*:*:(^rm):*:*files' ignored-patterns '*?.o|*?.d|*?.aux|*?~|*\#'
+
+# 補完で大文字小文字を区別しない。
+zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'
+
+# 補完候補をカーソルで選ぶ。
+zstyle ':completion:*:default' menu select=1
+
+# cd 時にカレントディレクトリに候補がなかったら cdpath から選ぶ。
+zstyle ':completion:*:cd:*' tag-order local-directories path-directories
+
+# 補完時にこれらのディレクトリは除外する。
+zstyle ':completion:*:cd:*' ignored-patterns '*CVS|*.svn|*.git|*lost+found'
+
+# cd 時にカレントディレクトリを候補にしない。例えば、cd ../<TAB> とすれば分かる。
+zstyle ':completion:*:cd:*' ignore-parents parent pwd
+
+# kill 候補を色付け
+zstyle ':completion:*:*:kill:*:processes' list-colors '=(#b) #([%0-9]#)*=0=01;31'
+
+# math function を有効化する。zsh は浮動小数点を使えるのがいい。
+zmodload -i zsh/mathfunc
+
+
+# anyframe bindkey
+# http://qiita.com/mollifier/items/81b18c012d7841ab33c3
+bindkey '^@' anyframe-widget-cdr
+bindkey '^x^@' anyframe-widget-checkout-git-branch
+
+bindkey '^r' anyframe-widget-execute-history
+bindkey '^x^r' anyframe-widget-execute-history
+
+bindkey '^xk' anyframe-widget-kill
+bindkey '^x^k' anyframe-widget-kill
+
+#bindkey '^xp' anyframe-widget-put-history
+#bindkey '^x^p' anyframe-widget-put-history
+
+#bindkey '^xg' anyframe-widget-cd-ghq-repository
+#bindkey '^x^g' anyframe-widget-cd-ghq-repository
+
+#bindkey '^xi' anyframe-widget-insert-git-branch
+#bindkey '^x^i' anyframe-widget-insert-git-branch
+#
+#bindkey '^xf' anyframe-widget-insert-filename
+#bindkey '^x^f' anyframe-widget-insert-filename
+
+autoload -Uz chpwd_recent_dirs cdr add-zsh-hook
+add-zsh-hook chpwd chpwd_recent_dirs
+
+
+#if [[ -n $(echo ${^fpath}/chpwd_recent_dirs(N)) && -n $(echo ${^fpath}/cdr(N)) ]]; then
+#    autoload -Uz chpwd_recent_dirs cdr add-zsh-hook
+#    add-zsh-hook chpwd chpwd_recent_dirs
+#    zstyle ':completion:*:*:cdr:*:*' menu selection
+#    zstyle ':completion:*' recent-dirs-insert both
+#    zstyle ':chpwd:*' recent-dirs-max 500
+#    zstyle ':chpwd:*' recent-dirs-default true
+#    zstyle ':chpwd:*' recent-dirs-file "${XDG_CACHE_HOME:-$HOME/.cache}/shell/chpwd-recent-dirs"
+#    zstyle ':chpwd:*' recent-dirs-pushd true
+#fi

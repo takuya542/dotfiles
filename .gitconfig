@@ -1,0 +1,34 @@
+[user]
+    name  = takuya542
+    email = takuya542@gmail.com
+[color]
+    status      = auto
+    diff        = auto
+    branch      = auto
+    interactive = auto
+    grep        = auto
+[push]
+    default = tracking       # defaultのpush先はtrackingしているリポジトリ
+[core]
+    excludesfile = ~/.gitignore  # globalな.gitignoreの指定
+    autocrlf     = input             # CRLFを自動変換
+    editor       = vim
+[diff]
+    patience = true
+[alias]
+    g  = git
+    ad = add
+    cm = commit -m
+    co = checkout
+    st = status
+    bb = branch
+    df = diff
+    dc = diff --cached
+    d1 = diff HEAD^ HEAD
+    d2 = diff HEAD^^ HEAD
+    d3 = diff HEAD^^^ HEAD
+    d4 = diff HEAD^^^^ HEAD
+    d5 = diff HEAD^^^^^ HEAD
+    remotes = remote -v
+    log = log --graph --all --decorate --abbrev-commit --branches --date=short --pretty=format:\"%C(red)%h%C(reset) %C(green)[%ad]%C(reset) %s %C(cyan)@%an%C(reset) %C(yellow)%d%C(reset)\"
+

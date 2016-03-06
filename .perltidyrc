@@ -1,0 +1,4 @@
+-pbp      # apply the rule of "perl-best-practice"
+-l=80     # Max line witdh is 80 cols
+-i=4      # Indent level is 4 colsi
+-t -et=4  # 1 tab is 4 white spaces
