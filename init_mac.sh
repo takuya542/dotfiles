@@ -11,7 +11,7 @@ for alias in `find $HOME -type l  -maxdepth 1`; do
     rm ${alias}
 done
 
-for file in `find $HOME/dotfiles -name ".*" -maxdepth 1 | sed 's!^.*/!!' | grep -v .git`; do
+for file in `find $HOME/dotfiles -maxdepth 1 -name ".*" | sed 's!^.*/!!' | grep -v '.git$'`; do
     echo "ln -s -f $HOME/dotfiles/${file} $HOME/${file}"
     ln -s -f $HOME/dotfiles/${file} $HOME/${file}
 done
