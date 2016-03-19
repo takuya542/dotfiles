@@ -1,11 +1,16 @@
 alias vi='vim'
 alias vm='vim'
 alias vmi='vim'
+alias vni='vim'
+alias vin='vim'
+alias vn='vim'
 
 alias pvi='pvim'
 alias pvm='pvim'
 alias pvmi='pvim'
-alias ples='pless'
+alias pvni='pvim'
+alias pvin='pvim'
+alias pvn='pvim'
 
 alias path='echo $PATH'
 alias df='df -h'
@@ -21,33 +26,78 @@ alias g='git'
 alias ack='ag'
 alias ll='ls -la'
 
-# .zsh_mainにキーバインド設定
 
 # 引数で与えた文字列を含むファイル一覧を表示、選択したファイルをvimで開く
+# Usage: pvim
+# Usage: pless hogehoge /path/to/dir
 function pvim () {
-  if [ "$1" = "" ]; then
-    echo "Usage: pvim [PATTERN]"
-    return
+
+  # 引数無しの場合
+  if [ $# -eq 0 ]; then
+    \vim $( ag -l ./ | anyframe-selector-auto )
+
+  # 文字列とPathが指定されてる場合
+  elif [ $# -eq 2 ]; then
+
+    # path確認
+    if [ ! -e $2 ]; then
+      echo "No Path Matched to Grep $2"
+      return
+    fi
+
+    # 対処ファイルが存在するか確認
+    found_file_num=`ag $1 $2 | wc -l`
+    if [ ${found_file_num} -ne 0 ]; then
+      vim $( ag $1 $2 | peco --query "$LBUFFER" | awk -F : '{print "-c " $2 " " $1}')
+    else
+      echo "No File Matched to Open"
+      return
+    fi
+
   else
-    vim $( ag $@ | peco --query "$LBUFFER" | awk -F : '{print "-c " $2 " " $1}')
+
+    echo "Usage: pvim [PATTERN] [PATH]"
+    return
+
   fi
 }
 
 # 引数で与えた文字列を含むファイル一覧を表示、選択したファイルをvimで開く
+# Usage: pless hogehoge /path/to/dir
+
 function pless () {
-  if [ "$1" = "" ]; then
-    echo "Usage: pless [PATTERN]"
-    return
-  else
-    ag $@ \
+
+  if [ $# -eq 2 ]; then
+
+    # path確認
+    if [ ! -e $2 ]; then
+      echo "No Path Matched to Grep $2"
+      return
+    fi
+
+    # 対処ファイルが存在するか確認
+    found_file_num=`ag -l $1 $2 | wc -l`
+    if [ ${found_file_num} -eq 0 ]; then
+      echo "No File Matched to Open"
+      return
+    fi
+
+    ag $1 $2 \
       | anyframe-selector-auto \
       | cut -d ':' -f01 \
       | anyframe-action-execute less
+
+  else
+
+    echo "Usage: pless [PATTERN] [PATh]"
+    return
+
   fi
 }
 
 
 # セッション一覧からアタッチ先を選択,アタッチする
+# Ctr + ]
 function pscreen() {
   screen -ls | grep -i "Detached" > /dev/null 2>&1
   if [ $? -eq 0  ]; then
@@ -60,4 +110,3 @@ function pscreen() {
     return
   fi
 }
-

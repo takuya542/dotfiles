@@ -25,5 +25,3 @@ autoload -Uz anyframe-init
 anyframe-init
 
 export PATH=/usr/bin/:/usr/sbin:/sbin:/bin:/usr/local/bin/:$HOME/dotfiles/script/tools:$PATH
-export LESS='-R'
-export LESSOPEN='| /usr/share/source-highlight/src-hilite-lesspipe.sh %s'
