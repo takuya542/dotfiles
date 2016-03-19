@@ -16,6 +16,19 @@ alias g='git'
 alias ack='ag'
 alias ll='ls -la'
 
-function gvim () {
+# 引数で与えた文字列を含むファイル一覧を表示、選択したファイルをvimで開く
+function pvim () {
   vim $(ag $@ | peco --query "$LBUFFER" | awk -F : '{print "-c " $2 " " $1}')
+}
+
+# セッション一覧からアタッチ先を選択,アタッチする
+function pscreen() {
+  FILTERD_SCREEN_PID=$(screen -ls | peco --query "$LBUFFER" | cut -d '.' -f01 | sed -e 's/^\t//g')
+  screen -R $FILTERD_SCREEN_PID
+}
+
+# ブランチ一覧を表示、選択したブランチへcheckout
+function pbranch() {
+  FILTERD_BRANCH=$(git branch | peco --query "$LBUFFER" | sed -e 's/^\*//g' | sed -e 's/^ *//g')
+  git checkout $FILTERD_BRANCH
 }

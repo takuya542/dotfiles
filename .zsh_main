@@ -307,21 +307,18 @@ bindkey '^x^r' anyframe-widget-execute-history
 bindkey '^xk' anyframe-widget-kill
 bindkey '^x^k' anyframe-widget-kill
 
-#bindkey '^xp' anyframe-widget-put-history
-#bindkey '^x^p' anyframe-widget-put-history
-
-#bindkey '^xg' anyframe-widget-cd-ghq-repository
-#bindkey '^x^g' anyframe-widget-cd-ghq-repository
-
-#bindkey '^xi' anyframe-widget-insert-git-branch
-#bindkey '^x^i' anyframe-widget-insert-git-branch
-#
-#bindkey '^xf' anyframe-widget-insert-filename
-#bindkey '^x^f' anyframe-widget-insert-filename
-
+# cdr用設定 (cdのインクリメントサーチ)
 autoload -Uz chpwd_recent_dirs cdr add-zsh-hook
 add-zsh-hook chpwd chpwd_recent_dirs
 
+# 自作peco function(.zsh_alias内定義)
+zle -N pscreen  # functionとして定義
+bindkey '^s' pscreen
+bindkey '^x^s' pscreen
+
+zle -N pbranch  # functionとして定義
+bindkey '^b' pbranch
+bindkey '^x^b' pbranch
 
 #if [[ -n $(echo ${^fpath}/chpwd_recent_dirs(N)) && -n $(echo ${^fpath}/cdr(N)) ]]; then
 #    autoload -Uz chpwd_recent_dirs cdr add-zsh-hook
