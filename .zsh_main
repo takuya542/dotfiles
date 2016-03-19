@@ -307,18 +307,16 @@ bindkey '^x^r' anyframe-widget-execute-history
 bindkey '^xk' anyframe-widget-kill
 bindkey '^x^k' anyframe-widget-kill
 
+bindkey '^b' anyframe-widget-checkout-git-branch
+bindkey '^x^b' anyframe-widget-checkout-git-branch
+
 # cdr用設定 (cdのインクリメントサーチ)
 autoload -Uz chpwd_recent_dirs cdr add-zsh-hook
 add-zsh-hook chpwd chpwd_recent_dirs
 
 # 自作peco function(.zsh_alias内定義)
 zle -N pscreen  # functionとして定義
-bindkey '^s' pscreen
-bindkey '^x^s' pscreen
-
-zle -N pbranch  # functionとして定義
-bindkey '^b' pbranch
-bindkey '^x^b' pbranch
+bindkey '^]' pscreen
 
 #if [[ -n $(echo ${^fpath}/chpwd_recent_dirs(N)) && -n $(echo ${^fpath}/cdr(N)) ]]; then
 #    autoload -Uz chpwd_recent_dirs cdr add-zsh-hook

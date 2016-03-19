@@ -1,14 +1,19 @@
 alias vi='vim'
 alias vm='vim'
 alias vmi='vim'
-alias gvi='gvim'
-alias gv='gvim'
+
+alias pvi='pvim'
+alias pvm='pvim'
+alias pvmi='pvim'
+alias ples='pless'
+
 alias path='echo $PATH'
 alias df='df -h'
 alias du='du -m | sort -n | tail'
 alias nkf='nkf -g '
 alias grep='grep -a --color'
 alias ls='ls -G'
+alias less='less -R -N'
 alias cdd='cd ../'
 alias cddd='cd ../../'
 alias cdddd='cd ../../../'
@@ -16,19 +21,43 @@ alias g='git'
 alias ack='ag'
 alias ll='ls -la'
 
+# .zsh_mainにキーバインド設定
+
 # 引数で与えた文字列を含むファイル一覧を表示、選択したファイルをvimで開く
 function pvim () {
-  vim $(ag $@ | peco --query "$LBUFFER" | awk -F : '{print "-c " $2 " " $1}')
+  if [ "$1" = "" ]; then
+    echo "Usage: pvim [PATTERN]"
+    return
+  else
+    vim $( ag $@ | peco --query "$LBUFFER" | awk -F : '{print "-c " $2 " " $1}')
+  fi
 }
+
+# 引数で与えた文字列を含むファイル一覧を表示、選択したファイルをvimで開く
+function pless () {
+  if [ "$1" = "" ]; then
+    echo "Usage: pless [PATTERN]"
+    return
+  else
+    ag $@ \
+      | anyframe-selector-auto \
+      | cut -d ':' -f01 \
+      | anyframe-action-execute less
+  fi
+}
+
 
 # セッション一覧からアタッチ先を選択,アタッチする
 function pscreen() {
-  FILTERD_SCREEN_PID=$(screen -ls | peco --query "$LBUFFER" | cut -d '.' -f01 | sed -e 's/^\t//g')
-  screen -R $FILTERD_SCREEN_PID
+  screen -ls | grep -i "Detached" > /dev/null 2>&1
+  if [ $? -eq 0  ]; then
+    screen -ls \
+      | anyframe-selector-auto \
+      | cut -d '.' -f01 | sed -e 's/^\t//g' \
+      | anyframe-action-execute screen -R
+  else
+    echo "No Detached Sockets found"
+    return
+  fi
 }
 
-# ブランチ一覧を表示、選択したブランチへcheckout
-function pbranch() {
-  FILTERD_BRANCH=$(git branch | peco --query "$LBUFFER" | sed -e 's/^\*//g' | sed -e 's/^ *//g')
-  git checkout $FILTERD_BRANCH
-}

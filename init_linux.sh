@@ -1,4 +1,4 @@
-sudo yum -y install zsh
+sudo yum -y install zsh source-hilight
 sudo rpm -lvi http://swiftsignal.com/packages/centos/6/x86_64/the-silver-searcher-0.14-1.el6.x86_64.rpm
 USER=`whoami`
 sudo usermod -s /bin/zsh $USER
