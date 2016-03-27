@@ -110,3 +110,11 @@ function pscreen() {
     return
   fi
 }
+
+function pssh() {
+  aws route53 list-resource-record-sets --hosted-zone-id Z3P7MD0UGV1GC1 | jq '.ResourceRecordSets[]' | jq 'select(.Type == "A")' | jq -r '.Name' \
+    | anyframe-selector-auto \
+    | anyframe-action-execute ssh
+}
+
+

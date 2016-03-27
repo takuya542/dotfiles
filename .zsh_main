@@ -318,6 +318,9 @@ add-zsh-hook chpwd chpwd_recent_dirs
 zle -N pscreen  # functionとして定義
 bindkey '^]' pscreen
 
+zle -N pssh  # functionとして定義
+bindkey '^[' pssh
+
 #if [[ -n $(echo ${^fpath}/chpwd_recent_dirs(N)) && -n $(echo ${^fpath}/cdr(N)) ]]; then
 #    autoload -Uz chpwd_recent_dirs cdr add-zsh-hook
 #    add-zsh-hook chpwd chpwd_recent_dirs
