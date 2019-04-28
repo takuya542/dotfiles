@@ -3,7 +3,7 @@
 ```
 git clone git@github.com:takuya542/dotfiles.git
 cd ~/dotfiles
-bash ~/init_linux.sh
+bash ~/init_mac.sh
 
 vi ~/.vimrc
 :BundleInstall
