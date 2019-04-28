@@ -1,3 +1,4 @@
+/usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
 brew install zsh
 brew install peco
 brew install the_silver_searcher
