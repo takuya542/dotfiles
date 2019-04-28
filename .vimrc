@@ -100,6 +100,8 @@ Bundle 'hail2u/vim-css3-syntax'
 Bundle 'taichouchou2/html5.vim'
 Bundle 'jelera/vim-javascript-syntax'
 
+"terraformのsyntax check
+Bundle 'hashivim/vim-terraform'
 
 filetyp plugin indent on
 
@@ -213,7 +215,8 @@ let g:syntastic_auto_loc_list=2
 let g:syntastic_enable_perl_checker = 1
 let g:syntastic_perl_checkers = ['perl', 'podchecker']
 
-
+"syntax check for terraform(保存時に自動でterraform fmtしてくれる)
+let g:terraform_fmt_on_save = 1
 
  " Use smartcase.
 let g:neocomplcache_enable_smart_case = 1
